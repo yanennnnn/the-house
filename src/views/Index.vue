@@ -15,11 +15,17 @@
         </li>
       </ul>
     </section>
+    <Footer />
   </div>
 </template>
 <script>
+import Footer from '../components/Footer.vue';
+
 export default {
   name: 'Home',
+  components: {
+    Footer,
+  },
   data() {
     return {
       rooms: [],
