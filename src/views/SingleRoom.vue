@@ -88,13 +88,20 @@
         </section>
       </div>
       <div class="singleRoom_booking">
-        <!-- <Calendar></Calendar> -->
         <DatePicker
           mode="range"
           :value="null"
           color="gray"
           is-inline
+          :startDate="booking.start"
+          :endDate="booking.end"
+          :min-date="new Date()"
+          :max-date="maxDate"
+          :locale="{ id: 'en', firstDayOfWeek: 1, masks: { weekdays: 'WWW' } }"
         />
+        <div>
+          <p></p>
+        </div>
       </div>
     </div>
     <Footer/>
@@ -121,7 +128,13 @@ export default {
       checkInAndOut: {},
       amenities: {},
       getTargetBg: [],
-      range: {},
+      booking: {
+        start: '',
+        end: '',
+        date: [],
+      },
+      holidays: 0,
+      workingdays: 0,
       // date: null,
     };
   },
