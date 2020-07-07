@@ -88,18 +88,26 @@
         </section>
       </div>
       <div class="singleRoom_booking">
-        <p></p>
+        <!-- <Calendar></Calendar> -->
+        <DatePicker
+          mode="range"
+          :value="null"
+          color="gray"
+          is-inline
+        />
       </div>
     </div>
     <Footer/>
   </div>
 </template>
 <script>
+import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import swiper from '../components/Swiper.vue';
 import Footer from '../components/Footer.vue';
 
 export default {
   components: {
+    DatePicker,
     swiper,
     Footer,
   },
@@ -113,6 +121,8 @@ export default {
       checkInAndOut: {},
       amenities: {},
       getTargetBg: [],
+      range: {},
+      // date: null,
     };
   },
   methods: {
@@ -139,6 +149,12 @@ export default {
         });
     },
   },
+  computed: {
+    maxDate() {
+      const d = new Date();
+      return d.setMonth(d.getMonth() + 3);
+    },
+  },
   created() {
     this.getSingleRoom();
   },
@@ -150,6 +166,7 @@ export default {
     justify-content:space-between;
     margin:24px 42px;
     &_content{
+      width: 50%;
       margin-right: 72px;
       &_title{
         display: flex;
@@ -209,9 +226,6 @@ export default {
               margin-right: 2px;
             }
           }
-          // li.active{
-          //   color:red;
-          // }
           li:nth-child(4n){
             margin-right: 5px;
           }
@@ -222,9 +236,8 @@ export default {
       }
     }
     &_booking{
-      // width: 50%;
+      width: 50%;
       margin-left: 72px;
     }
   }
-
 </style>
