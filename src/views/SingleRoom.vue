@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 <template>
   <div>
     <swiper :getTargetId='getTargetBg'></swiper>
@@ -93,14 +94,18 @@
           :value="null"
           color="gray"
           is-inline
-          :startDate="booking.start"
-          :endDate="booking.end"
+          @dayclick='dayClicked'
+          format="YYYY-MM-DD"
           :min-date="new Date()"
+          class='date-picker'
           :max-date="maxDate"
-          :locale="{ id: 'en', firstDayOfWeek: 1, masks: { weekdays: 'WWW' } }"
+          :locale="{ id: 'en', firstDayOfWeek: 1,
+            masks: { weekdays: 'WWW', data: ['YYYY-MM-DD'],}}"
         />
-        <div>
-          <p></p>
+        <div class="totalPrice" v-if="workingdays>0 || holidays>0">
+          <p>Room<span>{{ totalPrice|currency }}</span></p>
+          <p>Tax<span>$0</span></p>
+          <p>Total {{totalPrice|cuerry}}</p>
         </div>
       </div>
     </div>
@@ -129,13 +134,11 @@ export default {
       amenities: {},
       getTargetBg: [],
       booking: {
-        start: '',
-        end: '',
         date: [],
       },
+      selectedDay: null,
       holidays: 0,
       workingdays: 0,
-      // date: null,
     };
   },
   methods: {
@@ -161,11 +164,47 @@ export default {
           }
         });
     },
+    dayClicked(day) {
+      this.selectedDay = day;
+      if (this.selectedDay.attributes) {
+        this.booking.start = this.selectedDay.attributes[0].dates[0].start;
+        this.booking.end = this.selectedDay.attributes[0].dates[0].end;
+        this.calDate();
+      }
+    },
+    calDate() {
+      this.booking.date = [];
+      this.booking.date = [];
+      let holidays = 0;
+      let workingdays = 0;
+      const from = this.booking.start;
+      const to = this.booking.end;
+      while (from < to) {
+        const day = from.getDay();
+        if ((day === 6) || (day === 0)) {
+          holidays += 1;
+        } else {
+          workingdays += 1;
+        }
+        from.setDate(from.getDate() + 1);
+      }
+
+      this.holidays = holidays;
+      this.workingdays = workingdays;
+    },
+    dateFormat() {
+    },
   },
   computed: {
     maxDate() {
       const d = new Date();
       return d.setMonth(d.getMonth() + 3);
+    },
+    totalPrice() {
+      return this.roomInfo
+        ? this.holidays * this.roomInfo.holidayPrice
+        + this.roomInfo.normalDayPrice * this.workingdays
+        : 0;
     },
   },
   created() {
@@ -174,6 +213,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  .date-picker{
+    border:none;
+    color:#2c3e50;
+    font-family:"Open Sans",'微軟正黑體', Helvetica, Arial, sans-serif;
+  }
   .singleRoom{
     display: flex;
     justify-content:space-between;
