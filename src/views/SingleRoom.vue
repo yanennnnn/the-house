@@ -1,9 +1,8 @@
-/* eslint-disable consistent-return */
 <template>
-  <div>
+  <div class="Room">
     <swiper :getTargetId='getTargetBg'></swiper>
     <div class="singleRoom">
-       <div class="singleRoom_content">
+      <div class="singleRoom_content">
         <div class="singleRoom_content_title">
           <h1>{{ roomInfo.name }}</h1>
           <span><img src="../assets/imgs/typcn-user.svg" alt="">
@@ -89,23 +88,27 @@
         </section>
       </div>
       <div class="singleRoom_booking">
-        <DatePicker
-          mode="range"
-          :value="null"
-          color="gray"
-          is-inline
-          @dayclick='dayClicked'
-          format="YYYY-MM-DD"
-          :min-date="new Date()"
-          class='date-picker'
-          :max-date="maxDate"
-          :locale="{ id: 'en', firstDayOfWeek: 1,
-            masks: { weekdays: 'WWW', data: ['YYYY-MM-DD'],}}"
-        />
-        <div class="totalPrice" v-if="workingdays>0 || holidays>0">
-          <p>Room<span>{{ totalPrice|currency }}</span></p>
-          <p>Tax<span>$0</span></p>
-          <p>Total {{totalPrice|cuerry}}</p>
+        <div class="calandar">
+          <DatePicker
+            mode="range"
+            :value="null"
+            color="gray"
+            is-inline
+            @dayclick='dayClicked'
+            format="YYYY-MM-DD"
+            :min-date="new Date()"
+            class='date-picker'
+            :max-date="maxDate"
+            :locale="{ id: 'en', firstDayOfWeek: 1,
+              masks: { weekdays: 'WWW', data: ['YYYY-MM-DD'],}}"
+          />
+        </div>
+        <div class="totalPrice">
+          <!-- v-if="workingdays>0 || holidays>0" -->
+          <p><span>Room</span><span>{{ totalPrice|currency }}</span></p>
+          <p><span>Tax</span><span>$0</span></p>
+          <p><span>Total</span><span>{{ totalPrice|currency }}</span></p>
+          <a href="#">Order</a>
         </div>
       </div>
     </div>
@@ -213,6 +216,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  .Room{
+    min-height: 100%;
+    padding-bottom: 100px;
+    position: relative;
+    box-sizing: border-box;
+  }
   .date-picker{
     border:none;
     color:#2c3e50;
@@ -220,13 +229,29 @@ export default {
   }
   .singleRoom{
     display: flex;
-    justify-content:space-between;
+    justify-content:center;
     margin:24px 42px;
+    @media (max-width: 768px){
+      flex-wrap: wrap;
+      margin:24px 10px;
+    }
     &_content{
-      width: 50%;
+      width: 70%;
       margin-right: 72px;
+      @media (min-width: 769px) and (max-width: 1024px){
+         margin-right: 20px;
+      }
+      @media (max-width: 768px){
+        width: 100%;
+        margin-right: 0;
+        margin-left: 10px;
+      }
       &_title{
         display: flex;
+        @media (max-width: 769px){
+          flex-wrap: wrap;
+          justify-content: center;
+        }
         h1{
           display: inline-block;
           font-size: 30px;
@@ -234,6 +259,13 @@ export default {
           margin-right: 23px;
           vertical-align: middle;
           letter-spacing: 2px;
+          @media (min-width: 769px) and (max-width: 1024px){
+            margin-right: 15px;
+            font-size: 25px;
+          }
+          @media (max-width: 768px){
+            width: 100%;
+          }
         }
         span{
           display: inline-block;
@@ -244,6 +276,9 @@ export default {
         }
         span+span{
           margin-left: 18px;
+          @media (min-width: 769px) and (max-width: 1024px){
+             margin-left: 10px;
+          }
         }
         img{
           vertical-align: middle;
@@ -257,6 +292,9 @@ export default {
         line-height: 19px;
         font-size: 15px;
         letter-spacing: 2px;
+        @media (max-width: 768px){
+          margin-bottom: 35px;
+        }
       }
       &_check,&_price{
         text-align: left;
@@ -271,30 +309,109 @@ export default {
         ul {
           display: flex;
           flex-wrap: wrap;
+          @media (max-width: 768px){
+            justify-content: center;
+          }
           li{
             color: #C2C2C2;
             font-size: 12px;
             width: 20%;
             text-align: left;
+            @media (max-width: 768px){
+              width: 30%;
+            }
             &.active {
               color: #272E31;
             }
             i{
               margin-right: 2px;
+              @media (max-width: 768px){
+                margin-top:24px;
+              }
             }
           }
           li:nth-child(4n){
             margin-right: 5px;
+            @media (max-width: 768px){
+             margin-right: 5px;
+            }
           }
           li:nth-child(n+5){
             margin-top: 24px;
+            @media (max-width: 768px){
+             margin-top: 0px;
+            }
           }
         }
       }
     }
     &_booking{
-      width: 50%;
-      margin-left: 72px;
+      width: 30%;
+      display:flex;
+      flex-direction: column;
+      align-items: right;
+      @media (min-width: 480px) and (max-width: 768px){
+        width: 100%;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-top: 30px;
+      }
+      @media (max-width: 479px){
+        width: 100%;
+        margin-top: 50px;
+        flex-direction: column;
+        align-items: center;
+      }
+      .calandar{
+        margin-left: auto;
+        @media (max-width: 768px){
+          margin-left: 0;
+        }
+      }
+      .totalPrice{
+        padding-right:10px;
+        display: flex;
+        flex-direction: column;
+        align-items:flex-end;
+        @media (min-width: 480px) and (max-width: 768px){
+          margin-top: 50px;
+          padding-right:0px;
+        }
+        @media (max-width: 479px){
+          margin-top: 10px;
+          margin-left: 90px;
+        }
+        p{
+          display: flex;
+          width: 145px;
+          letter-spacing: 2px;
+          &:first-child{
+            margin-bottom: 10px;
+          }
+          &:nth-child(3){
+            margin-top: 20px;
+          }
+          span:first-child{
+            margin-right: auto;
+          }
+        }
+        a{
+          letter-spacing: 2px;
+          display: block;
+          width: 125px;
+          box-sizing: border-box;
+          margin-top: 30px;
+          margin-left: auto;
+          padding: 11px 32px;
+          background: #495156;
+          box-shadow: 1px 1px 5px 0 #495156;
+          border-radius: 25px;
+          font-size: 20px;
+          color: #FFFFFF;
+          border:none;
+          text-decoration: none;
+        }
+      }
     }
   }
 </style>

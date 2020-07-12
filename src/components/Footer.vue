@@ -23,6 +23,11 @@ export default {
 <style lang="scss" scoped>
   footer{
     background: #495156;
+    position: absolute;
+    bottom:0px;
+    left:0px;
+    right: 0;
+    height: 50px;
   }
   .footerList{
     display: flex;
@@ -40,6 +45,9 @@ export default {
     }
     li+li{
       margin-left: 44px;
+      @media (max-width: 479px){
+        margin-left: 22px;
+      }
     }
     li+li::before{
       content: '';
@@ -50,6 +58,10 @@ export default {
       background-color:#EEF3F5;
       left: -22px;
       bottom: 50%;
+      @media (max-width: 479px){
+        left: -12px;
+        bottom: 45%;
+      }
     }
   }
 </style>

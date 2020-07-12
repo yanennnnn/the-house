@@ -1,4 +1,3 @@
-/* eslint-disable vue/valid-v-bind */
 <template>
   <swiper class="swiper" :options="swiperOption">
     <swiper-slide v-for="item in getTargetId" :key='item'>
@@ -57,8 +56,4 @@ export default {
      }
    }
   }
-
-//  .swiper-container{
-//     height: 432px;
-//   }
 </style>

@@ -1,20 +1,22 @@
 <template>
-  <div>
-    <div class="banner">
-      <div class="logo bgCover"></div>
+  <div class="Home">
+    <div class="">
+      <div class="banner">
+        <div class="logo bgCover"></div>
+      </div>
+      <section>
+        <ul class="roomList" >
+          <li v-for="item in rooms" :key="item.id">
+            <a href="#" @click.prevent='goSingleRoom(item.id)'>
+              <div class="roomList_bg bgCover"
+                :style="{backgroundImage: `url(${item.imageUrl})`}">
+              </div>
+              <p>{{ item.name }}</p>
+            </a>
+          </li>
+        </ul>
+      </section>
     </div>
-    <section>
-      <ul class="roomList" >
-        <li v-for="item in rooms" :key="item.id">
-          <a href="#" @click.prevent='goSingleRoom(item.id)'>
-            <div class="roomList_bg bgCover"
-              :style="{backgroundImage: `url(${item.imageUrl})`}">
-            </div>
-            <p>{{ item.name }}</p>
-          </a>
-        </li>
-      </ul>
-    </section>
     <Footer />
   </div>
 </template>
@@ -56,6 +58,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  .Home{
+      min-height: 100%;
+      padding-bottom: 100px;
+      position: relative;
+      box-sizing: border-box;
+  }
   .banner{
     background-image: url(../assets/imgs/homepage_banner.svg);
     background-size: cover;
@@ -89,7 +97,7 @@ export default {
       &:nth-child(n+4) {
         margin-top:45px;
       }
-      @media (min-width: 480px) and (max-width: 759px) {
+      @media (min-width: 480px) and (max-width: 768px) {
         width: 30%;
         &:nth-child(n+4){
           margin-top: 0;
