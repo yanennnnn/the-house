@@ -192,7 +192,7 @@ export default {
       flex-wrap: wrap;
       width: 370px;
       input{
-        // margin:0 auto;
+        text-align: left !important;
         font-size: 20px;
         color:#4C5356;
         border:none;
