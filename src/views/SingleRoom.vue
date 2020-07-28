@@ -1,6 +1,6 @@
 <template>
   <div class="Room">
-    <swiper :getTargetId='getTargetBg'></swiper>
+    <swiper :getTargetId='roomInfo.imageUrl'></swiper>
     <div class="singleRoom">
       <div class="singleRoom_content">
         <div class="singleRoom_content_title">
@@ -98,17 +98,17 @@
             format="YYYY-MM-DD"
             :min-date="new Date()"
             class='date-picker'
+            :disabled-dates='disabled'
             :max-date="maxDate"
             :locale="{ id: 'en', firstDayOfWeek: 1,
               masks: { weekdays: 'WWW', data: ['YYYY-MM-DD'],}}"
           />
         </div>
-        <div class="totalPrice">
-          <!-- v-if="workingdays>0 || holidays>0" -->
+        <div class="totalPrice" v-if="workingdays>0 || holidays>0">
           <p><span>Room</span><span>{{ totalPrice|currency }}</span></p>
           <p><span>Tax</span><span>$0</span></p>
           <p><span>Total</span><span>{{ totalPrice|currency }}</span></p>
-          <a href="#">Order</a>
+          <a href="#" @click="reservation">Order</a>
         </div>
       </div>
     </div>
@@ -117,10 +117,13 @@
 </template>
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
+import mixins from '@/mixins';
 import swiper from '../components/Swiper.vue';
 import Footer from '../components/Footer.vue';
 
 export default {
+  name: 'singleroom',
+  mixins: [mixins],
   components: {
     DatePicker,
     swiper,
@@ -128,90 +131,42 @@ export default {
   },
   data() {
     return {
-      singleRoom: {},
-      roomInfo: {},
-      descriptionShort: {
-        Bed: [],
-      },
-      checkInAndOut: {},
-      amenities: {},
-      getTargetBg: [],
-      booking: {
-        date: [],
-      },
-      selectedDay: null,
-      holidays: 0,
-      workingdays: 0,
+      roomId: this.$route.params.id,
+      disabled: [],
     };
   },
   methods: {
-    getSingleRoom() {
-      const vm = this;
-      const { id } = vm.$route.params;
-      const headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ZB0LjHMbZlbFBIEyazxg63gLCx46BoPzkOK3lm3PAdxOfWfP78ejlwXxIvtE',
-      };
-      const url = `https://challenge.thef2e.com/api/thef2e2019/stage6/room/${id}`;
-      vm.$http.get(url, { headers })
-        .then((res) => {
-          if (res.data.success) {
-            vm.singleRoom = res.data;
-            const room = res.data.room[0];
-            vm.roomInfo = room;
-            vm.getTargetBg = res.data.room[0].imageUrl;
-            vm.descriptionShort = res.data.room[0].descriptionShort;
-            vm.checkInAndOut = res.data.room[0].checkInAndOut;
-            vm.amenities = res.data.room[0].amenities;
-          }
-        });
-    },
-    dayClicked(day) {
-      this.selectedDay = day;
-      if (this.selectedDay.attributes) {
-        this.booking.start = this.selectedDay.attributes[0].dates[0].start;
-        this.booking.end = this.selectedDay.attributes[0].dates[0].end;
-        this.calDate();
+    reservation() {
+      if (this.booking.date.length > 0) {
+        this.$store.dispatch('setReservationDate', {
+          roomId: this.roomId,
+          date: this.booking.date,
+        })
+          .then(() => {
+            this.$router.push({ name: 'reservation', params: { id: this.roomId } });
+          });
       }
-    },
-    calDate() {
-      this.booking.date = [];
-      this.booking.date = [];
-      let holidays = 0;
-      let workingdays = 0;
-      const from = this.booking.start;
-      const to = this.booking.end;
-      while (from < to) {
-        const day = from.getDay();
-        if ((day === 6) || (day === 0)) {
-          holidays += 1;
-        } else {
-          workingdays += 1;
-        }
-        from.setDate(from.getDate() + 1);
-      }
-
-      this.holidays = holidays;
-      this.workingdays = workingdays;
-    },
-    dateFormat() {
     },
   },
   computed: {
-    maxDate() {
-      const d = new Date();
-      return d.setMonth(d.getMonth() + 3);
+    singleRoom() {
+      return this.$store.state.singleRoom;
     },
-    totalPrice() {
-      return this.roomInfo
-        ? this.holidays * this.roomInfo.holidayPrice
-        + this.roomInfo.normalDayPrice * this.workingdays
-        : 0;
+    roomInfo() {
+      return this.$store.state.roomInfo;
+    },
+    descriptionShort() {
+      return this.$store.state.descriptionShort;
+    },
+    checkInAndOut() {
+      return this.$store.state.checkInAndOut;
+    },
+    amenities() {
+      return this.$store.state.amenities;
     },
   },
   created() {
-    this.getSingleRoom();
+    this.$store.dispatch('getSingleRoom', this.roomId);
   },
 };
 </script>

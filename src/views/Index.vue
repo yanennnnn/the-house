@@ -30,30 +30,20 @@ export default {
   },
   data() {
     return {
-      rooms: [],
     };
   },
   methods: {
-    getRoom() {
-      const vm = this;
-      const headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ZB0LjHMbZlbFBIEyazxg63gLCx46BoPzkOK3lm3PAdxOfWfP78ejlwXxIvtE',
-      };
-      vm.$http.get('https://challenge.thef2e.com/api/thef2e2019/stage6/rooms', { headers })
-        .then((res) => {
-          if (res.data.success) {
-            vm.rooms = res.data.items;
-          }
-        });
-    },
     goSingleRoom(id) {
       this.$router.push(`/singleRoom/${id}`);
     },
   },
+  computed: {
+    rooms() {
+      return this.$store.state.rooms;
+    },
+  },
   created() {
-    this.getRoom();
+    this.$store.dispatch('getRoom');
   },
 };
 </script>
