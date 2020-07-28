@@ -98,7 +98,6 @@
             format="YYYY-MM-DD"
             :min-date="new Date()"
             class='date-picker'
-            :disabled-dates='disabled'
             :max-date="maxDate"
             :locale="{ id: 'en', firstDayOfWeek: 1,
               masks: { weekdays: 'WWW', data: ['YYYY-MM-DD'],}}"
@@ -132,7 +131,6 @@ export default {
   data() {
     return {
       roomId: this.$route.params.id,
-      disabled: [],
     };
   },
   methods: {
