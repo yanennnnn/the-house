@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Index.vue';
+import Home from '@/views/Index.vue';
 
 Vue.use(VueRouter);
 
@@ -22,12 +22,12 @@ export default new VueRouter({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/SingleRoom.vue'),
+      component: () => import('@/views/SingleRoom.vue'),
     },
     {
       path: '/reservation/:id',
       name: 'reservation',
-      component: () => import('../views/Reservation.vue'),
+      component: () => import('@/views/Reservation.vue'),
     },
   ],
 });
