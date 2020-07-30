@@ -1,20 +1,24 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '@/views/Index.vue';
+import index from '@/views/Index.vue';
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   scrollBehavior() {
     return { x: 0, y: 0 };
   },
   routes: [
     {
-      path: '/',
+      path: '*',
+      redirect: '/index',
+    },
+    {
+      path: '/index',
       name: 'Home',
-      component: Home,
+      component: index,
     },
     {
       path: '/singleRoom/:id',
