@@ -11,7 +11,7 @@
 - ESlint Airbnb
 - SCSS
 
-## :bookmark tabs: 基本架構
+## :bookmark: 基本架構
 - 首頁
 - 單一房型
 - 結帳區
