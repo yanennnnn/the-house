@@ -1,5 +1,5 @@
 # The House
-![首頁畫面](https://imgur.com/a/4LxtznD)
+![](https://i.imgur.com/IPqXNHF.jpg)
 
 ## :pencil: 使用技術
 - Vuex
