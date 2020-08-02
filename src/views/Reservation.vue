@@ -66,7 +66,6 @@
   </div>
 </template>
 <script>
-// import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import mixins from '@/mixins';
 import Footer from '../components/Footer.vue';
 
@@ -74,7 +73,6 @@ export default {
   name: 'reservation',
   mixins: [mixins],
   components: {
-    // DatePicker,
     Footer,
   },
   data() {
@@ -83,7 +81,6 @@ export default {
       roomId: this.$route.params.id,
       name: '',
       phone: '',
-
     };
   },
   methods: {
@@ -98,10 +95,8 @@ export default {
         phone: this.phone,
         date: this.reservation.date,
       }).then(() => {
-        this.$router.push({ name: 'singleroom', params: { id: this.roomId } });
         document.querySelector('.success').classList.remove('fade');
       }).catch(() => {
-        this.$router.push({ name: 'singleroom', params: { id: this.roomId } });
         document.querySelector('.false').classList.remove('fade');
       });
     },

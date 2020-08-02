@@ -97,6 +97,7 @@
             @dayclick='dayClicked'
             format="YYYY-MM-DD"
             :min-date="new Date()"
+            :disabled-dates='disabledDate'
             class='date-picker'
             :max-date="maxDate"
             :locale="{ id: 'en', firstDayOfWeek: 1,

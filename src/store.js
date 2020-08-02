@@ -71,6 +71,11 @@ export default new Vuex.Store({
           if (res.data.success) {
             context.commit('SETRESERVATIONDATE', obj);
           }
+          context.dispatch('getSingleRoom', obj.roomId);
+        }).catch((error) => {
+          if (error.res) {
+            console.log(error.response.data.message);
+          }
         });
     },
   },
@@ -101,7 +106,7 @@ export default new Vuex.Store({
       if (payload.roomName) state.reservation.roomName = payload.roomName;
       if (payload.name) state.reservation.name = payload.name;
       if (payload.phone) state.reservation.phone = payload.phone;
-      if (payload.date && payload.date.length > 1) state.reservation.date = payload.date;
+      if (payload.date) state.reservation.date = payload.date;
     },
   },
 });
