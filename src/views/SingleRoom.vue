@@ -1,5 +1,8 @@
 <template>
   <div class="Room">
+    <loading :active.sync="isLoading">
+      <img src="@/assets/imgs/103.svg" alt="">
+    </loading>
     <swiper :getTargetId='roomInfo.imageUrl'></swiper>
     <div class="singleRoom">
       <div class="singleRoom_content">
@@ -162,6 +165,9 @@ export default {
     },
     amenities() {
       return this.$store.state.amenities;
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     },
   },
   created() {

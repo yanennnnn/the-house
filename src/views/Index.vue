@@ -1,5 +1,8 @@
 <template>
   <div class="Home">
+    <loading :active.sync="isLoading">
+      <img src="@/assets/imgs/103.svg" alt="">
+    </loading>
     <div class="">
       <div class="banner">
         <div class="logo bgCover"></div>
@@ -40,6 +43,9 @@ export default {
   computed: {
     rooms() {
       return this.$store.state.rooms;
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     },
   },
   created() {

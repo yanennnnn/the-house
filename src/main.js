@@ -4,7 +4,9 @@ import VueAxios from 'vue-axios';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import VCalendar from 'v-calendar';
 import Vuex from 'vuex';
+import Loading from 'vue-loading-overlay';
 import store from './store';
+import 'vue-loading-overlay/dist/vue-loading.css';
 import App from './App.vue';
 import filters from './filters';
 import router from './router';
@@ -17,6 +19,7 @@ Vue.use(VCalendar, {
 });
 Vue.config.productionTip = false;
 Vue.filter('currency', filters);
+Vue.component('Loading', Loading);
 
 new Vue({
   router,

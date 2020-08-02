@@ -66,13 +66,11 @@ const Mixins = {
       return d.setMonth(d.getMonth() + 3);
     },
     disabledDate() {
-      // const d = new Date();
       const disDate = [];
       if (this.singleRoom.booking) {
         this.singleRoom.booking.forEach((item) => {
           disDate.push(new Date(item.date));
         });
-        console.log(disDate);
       }
       return disDate;
     },

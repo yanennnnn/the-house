@@ -12,6 +12,7 @@ const api = 'https://challenge.thef2e.com/api/thef2e2019/stage6/rooms';
 
 export default new Vuex.Store({
   state: {
+    isLoading: false,
     rooms: [],
     singleRoom: {},
     roomInfo: {
@@ -33,14 +34,17 @@ export default new Vuex.Store({
   },
   actions: {
     getRoom(context) {
+      context.commit('LOADING', true);
       axios.get(api, { headers })
         .then((res) => {
           if (res.data.success) {
             context.commit('ROOMS', res.data.items);
+            context.commit('LOADING', false);
           }
         });
     },
     getSingleRoom(context, id) {
+      context.commit('LOADING', true);
       axios.get(`https://challenge.thef2e.com/api/thef2e2019/stage6/room/${id}`, { headers })
         .then((res) => {
           if (res.data.success) {
@@ -51,10 +55,13 @@ export default new Vuex.Store({
             context.commit('AMENITIES', res.data.room[0].amenities);
             context.commit('IMGURL', res.data.room[0].imageUrl[0]);
           }
+          context.commit('LOADING', false);
         });
     },
     setReservationDate(context, obj) {
+      context.commit('LOADING', true);
       context.commit('SETRESERVATIONDATE', obj);
+      context.commit('LOADING', false);
     },
     roomBooking(context, obj) {
       axios.request({
@@ -107,6 +114,9 @@ export default new Vuex.Store({
       if (payload.name) state.reservation.name = payload.name;
       if (payload.phone) state.reservation.phone = payload.phone;
       if (payload.date) state.reservation.date = payload.date;
+    },
+    LOADING(state, status) {
+      state.isLoading = status;
     },
   },
 });

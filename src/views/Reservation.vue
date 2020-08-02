@@ -1,5 +1,8 @@
 <template>
   <div class="res">
+    <loading :active.sync="isLoading">
+      <img src="@/assets/imgs/103.svg" alt="">
+    </loading>
     <div class="reservation">
       <div class="reservation_RoomList bg-cover"
         :style="{backgroundImage:`url(${imgUrl})`}">
@@ -88,6 +91,7 @@ export default {
       if (this.name === '' || this.phone === '') {
         return;
       }
+      this.$store.commit('LOADING', true);
       this.$store.dispatch('roomBooking', {
         roomId: this.roomId,
         roomName: this.roomInfo.name,
@@ -95,6 +99,7 @@ export default {
         phone: this.phone,
         date: this.reservation.date,
       }).then(() => {
+        this.$store.commit('LOADING', true);
         document.querySelector('.success').classList.remove('fade');
       }).catch(() => {
         document.querySelector('.false').classList.remove('fade');
@@ -126,6 +131,9 @@ export default {
     reservationTo() {
       const d = new Date(this.reservation.date[this.reservation.date.length - 1]);
       return this.dateFormat(this.addDate(d, 1));
+    },
+    isLoading() {
+      return this.$store.state.isLoading;
     },
   },
   created() {
